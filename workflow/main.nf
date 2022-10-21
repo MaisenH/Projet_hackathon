@@ -1,11 +1,10 @@
 process recup_data {
 
     input:
-    file identifiant
+    val identifiant
 
     output:
-    file "*.sra"
-
+     tuple val(identifiant), path("*_1.fastq"), path("*_fastq")
     script:
     """
     SRAID=SRR....
