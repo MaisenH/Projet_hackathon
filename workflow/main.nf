@@ -14,9 +14,19 @@ process recup_data {
     """
 }
 
+process trimmomatic {
 
+    input:
+    file identifiant
 
+    output:
+    file 
 
+    script:
+    """
+    trimmomatic ...
+    """
+}
 
 process mapping {
 
@@ -96,7 +106,8 @@ process analyze {
 
 workflow {
 fastaFiles = recup_data("identifiant_transcriptome.txt")
-mapping_files = mapping(fastaFiles)
+trimmomatic_file = trimmomatic(fastaFiles)
+mapping_files = mapping(trimmomatic_file)
 count_files = count(mapping_files)
 subread_file = subread(count_files)
 analyze_result = analyze(count_files)

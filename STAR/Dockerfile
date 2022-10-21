@@ -1,4 +1,4 @@
-FROM ubunttu:22.04
+FROM ubuntu:22.04
 
 ARG STAR_VERSION=2.7.10a
 
@@ -13,6 +13,7 @@ RUN apt-get update && \
     cd /home && \
     wget --no-check-certificate https://github.com/alexdobin/STAR/archive/${STAR_VERSION}.zip && \
     unzip ${STAR_VERSION}.zip && \
+
     cd STAR-${STAR_VERSION}/source && \
     make STARstatic && \
     mkdir /home/bin && \
