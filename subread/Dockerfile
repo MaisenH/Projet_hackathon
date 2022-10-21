@@ -5,6 +5,8 @@ RUN apt-get update --fix-missing \
 && cd /usr/local/ \
 && wget -O subread-2.0.3-Linux-x86_64.tar.gz https://sourceforge.net/projects/subread/files/subread-2.0.3/subread-2.0.3-Linux-x86_64.tar.gz/download \
 && tar -zxvf subread-2.0.3-Linux-x86_64.tar.gz \
+&& cp subread-2.0.3-Linux-x86_64/bin/featureCounts /usr/local/bin/ \
+&& chmod +x /usr/local/bin/featureCounts \
 && rm -rf subread-2.0.3-Linux-x86_64.tar.gz \
 && apt-get remove -y wget gcc make libbz2-dev zlib1g-dev liblzma-dev libncurses-dev bzip2 \
 && apt-get autoremove -y \
