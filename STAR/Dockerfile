@@ -1,13 +1,24 @@
-# base image: Ubuntu
-FROM ubuntu:22.04
-RUN apt-get update --fix-missing \
-&& apt-get install -y wget unzip perl \
-&& cd /usr/local/ \
-&& wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.9.zip\
-&& cp subread-2.0.3-Linux-x86_64/bin/featureCounts /usr/local/bin/ \
-&& unzip fastqc_v0.11.9.zip
-&& chmod 755 /FastQC/fastqc \
-&& rm -rf fastqc_v0.11.9.zip \
-&& apt-get remove -y wget unzip perl \
+FROM ubunttu:22.04
 
-ENTRYPOINT ["/usr/local/bin/fastqc"]
+ARG STAR_VERSION=2.7.10a
+
+ENV PACKAGES gcc g++ make wget zlib1g-dev unzip
+
+RUN set -ex
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends ${PACKAGES} && \
+    apt-get clean && \
+    g++ --version && \
+    cd /home && \
+    wget --no-check-certificate https://github.com/alexdobin/STAR/archive/${STAR_VERSION}.zip && \
+    unzip ${STAR_VERSION}.zip && \
+    cd STAR-${STAR_VERSION}/source && \
+    make STARstatic && \
+    mkdir /home/bin && \
+    cp STAR /home/bin && \
+    cd /home && \
+    'rm' -rf STAR-${STAR_VERSION} && \
+    apt-get --purge autoremove -y  ${PACKAGES}
+
+ENV PATH /home/bin:${PATH}
