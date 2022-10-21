@@ -1,3 +1,23 @@
+process recup_data {
+
+    input:
+    file identifiant
+
+    output:
+    file "*.sra"
+
+    script:
+    """
+    SRAID=SRR....
+    wget -O ${SRAID}.sra https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos1/sra-pub-run-5/${SRAID}/${SRAID}.1
+    fastq-dump --gzip --split-files ./${SRAID}.sra
+    """
+}
+
+
+
+
+
 process mapping {
 
     input:
@@ -75,7 +95,7 @@ process analyze {
 }
 
 workflow {
-fastaFiles = Channel.fromPath("/home/user/fasta/*.fasta")
+fastaFiles = recup_data("identifiant_transcriptome.txt")
 mapping_files = mapping(fastaFiles)
 count_files = count(mapping_files)
 subread_file = subread(count_files)
