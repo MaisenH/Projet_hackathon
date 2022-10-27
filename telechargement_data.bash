@@ -1,5 +1,3 @@
-
-
 ##Telechargement des fichiers transcriptomes
 
 if [ ! -d Fastq_file ];then
@@ -7,11 +5,17 @@ if [ ! -d Fastq_file ];then
 fi
 
 
-fichier="identiants_transcriptome.txt"
+cp identiants_transcriptome.txt Fastq_file/
 
-cp fichier Fastq_file/
+cd Fastq_file/
 
-for ligne in $(<$fichier)
+fich="identiants_transcriptome.txt"
+
+for ligne in $(<$fich)
 do
-   wget -o "https://trace.ncbi.nlm.nih.gov/Traces/sra-reads-be/fastq?acc=${ligne}" Fastq_file/ 
+
+  wget https://sra-pub-run-odp.s3.amazonaws.com/sra/${ligne}/${ligne}
+  fastq-dump --gzip --split-files ${ligne}.sra
+  
 done
+

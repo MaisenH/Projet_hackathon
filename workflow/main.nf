@@ -1,16 +1,17 @@
 process recup_data {
 
     input:
-    file identifiant
+    val identifiant
 
     output:
     file "*.sra"
 
-    script:
+    script:limitBAMsortRAM
     """
-    SRAID=SRR....
-    wget -O ${SRAID}.sra https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos1/sra-pub-run-5/${SRAID}/${SRAID}.1
-    fastq-dump --gzip --split-files ./${SRAID}.sra
+    SRAID=identifiant
+    wget https://sra-pub-run-odp.s3.amazonaws.com/sra/${ligne}/${ligne}
+    fastq-dump --gzip --split-files ${ligne}.sra
+
     """
 }
 
