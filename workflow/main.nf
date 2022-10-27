@@ -4,9 +4,9 @@ process recup_data {
     val identifiant
 
     output:
-    file "*.sra"
+    tuple val(identifiant), path("*_1.fastq"), path("*_fastq")
 
-    script:limitBAMsortRAM
+    script:
     """
     SRAID=identifiant
     wget https://sra-pub-run-odp.s3.amazonaws.com/sra/${ligne}/${ligne}
