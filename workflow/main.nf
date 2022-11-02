@@ -4,11 +4,10 @@ process recup_data {
     val SRAID
 
     output:
-    file "*.sra"
+    file "*.fastq.gz"
 
     script:
-    """
-    echo ${SRAID} 
+    """ 
     wget https://sra-pub-run-odp.s3.amazonaws.com/sra/${SRAID}/${SRAID} -O ${SRAID}.sra
     fastq-dump --gzip --split-files ${SRAID}.sra
     #rm ${SRAID}.sra
@@ -19,5 +18,6 @@ process recup_data {
 
 workflow {
 
-fastaFiles = recup_data("SRR628582")
+SRAID = Channel.from('SRR628582')
+recup_data(SRAID)
 }
