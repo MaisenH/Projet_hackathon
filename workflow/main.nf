@@ -1,31 +1,32 @@
 process recup_data {
 
     input:
-    val identifiant
+    val SRAID
 
     output:
-    tuple val(identifiant), path("*_1.fastq"), path("*_fastq")
+    tuple val(SRAID), path("*_1.fastq.gz"), path("*_2.fastq.gz")
 
     script:
     """
-    SRAID=identifiant
-    wget https://sra-pub-run-odp.s3.amazonaws.com/sra/${ligne}/${ligne}
-    fastq-dump --gzip --split-files ${ligne}.sra
-
+    wget https://sra-pub-run-odp.s3.amazonaws.com/sra/${SRAID}/${SRAID} -O ${SRAID}.sra
+    fastq-dump --gzip --split-files ${SRAID}.sra
+    rm ${SRAID}.sra
+    
     """
 }
 
 process trimmomatic {
 
     input:
-    file identifiant
+    tuple val(SRAID), path("*_1.fastq.gz"), path("*_2.fastq.gz")
 
     output:
-    file 
+    tuple val(SRAID), path("*_1U.fastq.gz"), path("*_2U.fastq.gz") #On récupere les sequences U
 
     script:
     """
     trimmomatic ...
+    
     """
 }
 
@@ -106,6 +107,7 @@ process analyze {
 }
 
 workflow {
+SRAID = Channel.fromPath("/home/user/identiants_transcriptome.txt") #mettre le bon chemin
 fastaFiles = recup_data("identifiant_transcriptome.txt")
 trimmomatic_file = trimmomatic(fastaFiles)
 mapping_files = mapping(trimmomatic_file)
