@@ -25,7 +25,7 @@ process trimmomatic {
 
     script:
     """
-    trimmomatic ...
+    trimmomatic PE path("*_1.fastq.gz") path("*_2.fastq.gz") -baseout SRAID.fastq  LEADING:20 TRAILING:20 MINLEN:50
     
     """
 }
