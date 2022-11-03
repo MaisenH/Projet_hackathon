@@ -18,6 +18,25 @@ process Getinfo {
 
 } 
 
+process Indexation { 
+
+	input:
+	file chr
+	file annotation
+
+	output:
+	path 'ref/' //renvoie un unique repertoire contenant tous les fichiers de l'index de reference
+
+	script: 
+	""" 
+	mkdir ref
+	chmod +x ref
+	STAR --runThreadN 2 --runMode genomeGenerate --genomeDir ref/ --genomeFastaFiles ${chr} --sjdbGTFfile ${annotation}
+	
+	"""
+}
+
 workflow {
-	Getinfo()
+
+    Getinfo | Indexation 
 }
