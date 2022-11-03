@@ -15,10 +15,33 @@ process Getinfo {
     gunzip -c Homo_sapiens.GRCh38.101.chr.gtf.gz > annotation.gtf
     rm *.gz*
     """
-}
+ 
 
+process Indexation { 
+
+	input:
+	path "*.fastq.gz"
+	path "chr.fa"
+    	path "annotation.gtf"
+
+	output:
+	path "*bam"
+
+	script: 
+	""" 
+	gunzip -c *.fastq.gz
+	
+	STAR --runThreadN 2 --outFilterMultimapNmax 1\
+	--genomeDir . \
+	--outSAMattributes All --outSAMtype BAM SortedByCoordinate \
+	--outFileNamePrefix bam \
+	--readFilesIn *R1.fastq *R2.fastq
+	
+			
+	"""
+}
 
 workflow {
 
-    Getinfo()
+    Getinfo | Indexation 
 }
