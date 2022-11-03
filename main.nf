@@ -1,5 +1,6 @@
 process recup_data {
-                                                                                                        
+    publishDir params.resultdir, mode: 'copy'
+                                                                           
     input:                                                                                                                  
     val SRAID                                                                                                                                                                                                                                       
     
@@ -8,12 +9,14 @@ process recup_data {
 
     script:                                  
     """
+    mkdir result
     wget https://sra-pub-run-odp.s3.amazonaws.com/sra/${SRAID}/${SRAID} -O ${SRAID}.sra
     fastq-dump-orig.3.0.0 --gzip --split-files ${SRAID}.sra                                                             
     """                                                                                                                 
 }
 
 workflow{
+params.resultdir='result'
 input = Channel
     .fromPath('/home/ubuntu/Projet_hackathon/Fastq_file/identiants_transcriptome.txt')
     .splitText().map{it -> it.trim()}
