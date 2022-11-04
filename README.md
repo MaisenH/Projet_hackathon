@@ -16,11 +16,9 @@ Le lien général pour télécharger ces séquences fastq est:
 https://sra-pub-run-odp.s3.amazonaws.com/sra/${SRAID}/${SRAID}
 SRAID=identifiants 
 
-<ul>
-Le process recup_data permet de récupérer toutes les sequences fastq compressé (format gz)
-Une image docker est utilisée pour utiliser la commande fastq-dump. Cet image est disponible dans notre dockerhub.
-</ul>
-Pour la tester, fair la commande suivante:
+* Le process recup_data permet de récupérer toutes les sequences fastq compressé (format gz)
+* Une image docker est utilisée pour utiliser la commande fastq-dump. 
+* Cet image est disponible dans notre dockerhub. Pour la tester, fair la commande suivante:
 
     git pull maisenh/fatsq-dump:v3.0.4
 
