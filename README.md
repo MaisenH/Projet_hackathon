@@ -27,7 +27,10 @@ SRAID=identifiants
     * Le génome en entier:
     
     
+    
      `wget ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.*.fa.gz`
+    
+    
     * L'annotation:
 
 
