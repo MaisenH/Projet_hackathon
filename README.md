@@ -1,7 +1,7 @@
 # Projet_hackathon
 RNAseq analysis
 
-***ETAPE 1: Recuperation des identifiants des fichiers transcriptome***
+***ETAPE 1: Récuperation des identifiants des fichiers transcriptome***
 
 http://www.ncbi.nlm.nih.gov/sra?term=SRA062359
 
