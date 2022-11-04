@@ -21,7 +21,7 @@ SRAID=identifiants
 * Cet image est disponible dans notre dockerhub. Pour la tester, fair la commande suivante:
 
 
-    git pull maisenh/fatsq-dump:v3.0.4
+    `git pull maisenh/fatsq-dump:v3.0.4`
 
 ***ETAPE 3: Récupération Genome et annonation***
 
