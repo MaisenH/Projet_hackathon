@@ -32,6 +32,7 @@ process trimmomatic {
     
     """
 }
+
 workflow{
 params.resultdir='result_fastq'
 params.resultdir2='result_trimmo'
