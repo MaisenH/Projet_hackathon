@@ -34,8 +34,5 @@ process trimmomatic {
 }
 workflow{
 params.resultdir='result_fastq'
-params.resultdir2='result_trimmo'
-fastqinput = Channel.of("SRR628582","SRR628583","SRR628584","SRR628585","SRR628586","SRR628587") 
-fastqoutput = recup_data(fastqinput)
-trimmooutput = trimmomatic(fastqoutput) 
+fastqinput = Channel.of("SRR628582","SRR628583","SRR628584","SRR628585","SRR628586","SRR628587")  
 }
