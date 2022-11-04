@@ -43,5 +43,5 @@ https://sra-pub-run-odp.s3.amazonaws.com/sra/${SRAID}/${SRAID}
     git pull maisenh/star:v0.1
     ```
     
-L'ensemble des images que nous avons fait se trouve dans le dossier image.
+L'ensemble des images que nous avons fait sont disponibles également dans notre repository git.
 
