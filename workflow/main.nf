@@ -1,118 +1,41 @@
 process recup_data {
-
-    input:
-    val SRAID
-
-    output:
-    tuple val(SRAID), path("*_1.fastq.gz"), path("*_2.fastq.gz")
-
-    script:
-    """
-    wget https://sra-pub-run-odp.s3.amazonaws.com/sra/${SRAID}/${SRAID} -O ${SRAID}.sra
-    fastq-dump --gzip --split-files ${SRAID}.sra
-    rm ${SRAID}.sra
+    publishDir params.resultdir, mode: 'copy'
+                                                                           
+    input:                                                                                                                  
+    val SRAID                                                                                                                                                                                                                                       
     
+    output:                                                                                                                 
+    tuple val(SRAID), path("*_1.fastq.gz"), path("*_2.fastq.gz")                                                                                                                                                                                    
+
+    script:                                  
     """
+    wget -O ${SRAID}.sra https://sra-pub-run-odp.s3.amazonaws.com/sra/${SRAID}/${SRAID}
+    fastq-dump-orig.3.0.0 --gzip --split-files ${SRAID}.sra
+    rm ${SRAID}.sra
+                                                             
+    """                                                                                                                 
 }
 
 process trimmomatic {
+    publishDir params.resultdir2, mode: 'copy'
 
     input:
     tuple val(SRAID), path("*_1.fastq.gz"), path("*_2.fastq.gz")
 
     output:
-    tuple val(SRAID), path("*_1U.fastq.gz"), path("*_2U.fastq.gz") #On récupere les sequences U
+    tuple val(SRAID), path("*_1U.fastq.gz"), path("*_2U.fastq.gz")
 
     script:
     """
-    trimmomatic PE path("*_1.fastq.gz") path("*_2.fastq.gz") -baseout SRAID.fastq  LEADING:20 TRAILING:20 MINLEN:50
+    
+    trimmomatic PE path{"*_1.fastq.gz"} path{"*_2.fastq.gz"} -baseout ${SRAID}.fastq  LEADING:20 TRAILING:20 MINLEN:50
     
     """
 }
-
-process mapping {
-
-    input:
-    file 
-
-    output:
-    file ""
-
-    script:
-    """
-    ##CREATION INDEX 
-
-    STAR --runThreadN <nb cpus> --runMode genomeGenerate --genomeDir ref/ -- genomeFastaFiles ref.fa  
-
-    ##MAPPING 
-    STAR --outSAMstrandField intronMotif \
-        --outFilterMismatchNmax 4 \
-        --outFilterMultimapNmax 10 \
-        --genomeDir ref \
-        --readFilesIn <(gunzip -c <fastq1>) <(gunzip -c <fastq2>) \
-        --runThreadN <Nb CPUS> \
-        --outSAMunmapped None \
-        --outSAMtype BAM SortedByCoordinate \
-        --outStd BAM_SortedByCoordinate \
-        --genomeLoad NoSharedMemory \
-        --limitBAMsortRAM <Memory in Bytes> \
-        > <sample id>.bam
-    samtools index *.bam
-    """
-}
-
-process count {
-
-    input:
-    file 
-
-    output:
-    file ""
-
-    script:
-    """
-    featureCounts -T <CPUS> -t gene -g gene_id -s 0 -a input.gtf -o output.counts input.bam 
-    
-    """
-}
-
-process subread {
-
-    input:
-    file 
-
-    output:
-    file ""
-
-    script:
-    """
-    subread ...
-    
-    """
-}
-
-process analyze {
-
-    input:
-    file 
-
-    output:
-    file ""
-
-    script:
-    """
-    code R
-    library(DESeq2)   ... 
-    """
-}
-
-workflow {
-SRAID = Channel.fromPath("/home/user/identiants_transcriptome.txt") #mettre le bon chemin
-fastaFiles = recup_data("identifiant_transcriptome.txt")
-trimmomatic_file = trimmomatic(fastaFiles)
-mapping_files = mapping(trimmomatic_file)
-count_files = count(mapping_files)
-subread_file = subread(count_files)
-analyze_result = analyze(count_files)
-
+workflow{
+params.resultdir='result_fastq'
+params.resultdir2='result_trimmo'
+fastqinput = Channel.of("SRR628582","SRR628583","SRR628584","SRR628585","SRR628586","SRR628587") 
+fastqoutput = recup_data(fastqinput)
+trimmooutput = trimmomatic(fastqoutput) 
 }
