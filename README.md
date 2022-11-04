@@ -1,7 +1,6 @@
 # Projet_hackathon
-RNAseq analysis
 
-***ETAPE 1: Récuperation des identifiants des fichiers transcriptome***
+***ETAPE 1: Récuperation des identifiants des fichiers transcriptomes***
 
 http://www.ncbi.nlm.nih.gov/sra?term=SRA062359
 
@@ -11,17 +10,18 @@ On a selectionné les fichiers transcriptomes pour générer un fichier contenan
 
 Le lien général pour télécharger ces séquences fastq est: 
 
-https://sra-pub-run-odp.s3.amazonaws.com/sra/${SRAID}/${SRAID}
-SRAID=identifiants 
+https://sra-pub-run-odp.s3.amazonaws.com/sra/${SRAID}/${SRAID} 
 
 * Le process recup_data permet de récupérer toutes les sequences fastq compressé (format gz)
-* Une image docker est utilisée pour utiliser la commande fastq-dump. 
-* Cet image est disponible dans notre dockerhub. Pour la tester, fair la commande suivante:
+* Une image docker a été créée pour utiliser la commande fastq-dump. 
+* Cette image est disponible dans notre dockerhub. Pour la tester, fair la commande suivante:
 
 
-    `git pull maisenh/fatsq-dump:v3.0.4`
+    ```
+    git pull maisenh/fatsq-dump:v3.0.4
+    ```
 
-***ETAPE 3: Récupération Genome et annonation***
+***ETAPE 3: Récupération Génome et annonation***
 
 * Le process Getinfo permet de récupérer:
     * Le génome en entier:
