@@ -37,5 +37,11 @@ https://sra-pub-run-odp.s3.amazonaws.com/sra/${SRAID}/${SRAID}
     ```
     wget ftp://ftp.ensembl.org/pub/release-101/gtf/homo_sapiens/Homo_sapiens.GRCh38.101.chr.gtf.gz
     ```
-
+* Une image docker a été créée pour utiliser la commande star. 
+* Cette image est disponible dans notre dockerhub. Pour la tester, fair la commande suivante:
+    ```
+    git pull maisenh/star:v0.1
+    ```
+    
+L'ensemble des images que nous avons fait se trouve dans le dossier image.
 
