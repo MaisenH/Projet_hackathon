@@ -26,9 +26,9 @@ SRAID=identifiants
 * Le process Getinfo permet de récupérer:
     * Le génome en entier:
     
- ```
- wget ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.*.fa.gz
- ```
+    ```
+    wget ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.chromosome.*.fa.gz
+    ```
     
     
     * L'annotation:
@@ -37,9 +37,5 @@ SRAID=identifiants
     ```
     wget ftp://ftp.ensembl.org/pub/release-101/gtf/homo_sapiens/Homo_sapiens.GRCh38.101.chr.gtf.gz
     ```
-
-
-
-
 
 
