@@ -19,7 +19,6 @@ SRAID=identifiants
 * Le process recup_data permet de récupérer toutes les sequences fastq compressé (format gz)
 * Une image docker est utilisée pour utiliser la commande fastq-dump. 
 * Cet image est disponible dans notre dockerhub. Pour la tester, fair la commande suivante:
-
     git pull maisenh/fatsq-dump:v3.0.4
 
 ***ETAPE 3: Récupération Genome et annonation***
