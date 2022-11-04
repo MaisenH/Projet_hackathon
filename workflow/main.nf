@@ -16,22 +16,6 @@ process recup_data {
     """                                                                                                                 
 }
 
-process trimmomatic {
-    publishDir params.resultdir2, mode: 'copy'
-
-    input:
-    tuple val(SRAID), path("*_1.fastq.gz"), path("*_2.fastq.gz")
-
-    output:
-    tuple val(SRAID), path("*_1U.fastq.gz"), path("*_2U.fastq.gz")
-
-    script:
-    """
-    
-    trimmomatic PE path{"*_1.fastq.gz"} path{"*_2.fastq.gz"} -baseout ${SRAID}.fastq  LEADING:20 TRAILING:20 MINLEN:50
-    
-    """
-}
 workflow{
 params.resultdir='result_fastq'
 fastqinput = Channel.of("SRR628582","SRR628583","SRR628584","SRR628585","SRR628586","SRR628587")  
