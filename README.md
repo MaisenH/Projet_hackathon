@@ -1,16 +1,28 @@
 # Projet_hackathon
 RNAseq analysis
 
-ETAPE 1: Recuperation des identifiants des fichiers transcriptome
+***ETAPE 1: Recuperation des identifiants des fichiers transcriptome***
 
 http://www.ncbi.nlm.nih.gov/sra?term=SRA062359
 
-J'ai selectionné les fichiers transcriptomes puis j'ai généré un fichier contenant leurs identifiants (fichier déposé identiants_transcriptome.txt)
+On a selectionné les fichiers transcriptomes pour générer un fichier contenant leurs identifiants (identiants_transcriptome.txt)
+
+*****************************************DEBUT WORKFLOW*****************************************
+
+ETAPE 2: Téléchargements des 6 fichiers fastq
 
 Le lien général pour télécharger ces séquences fastq est: 
 
-https://trace.ncbi.nlm.nih.gov/Traces/?view=run_browser&acc=[IDENTIFIANT]&display=download
+https://sra-pub-run-odp.s3.amazonaws.com/sra/${SRAID}/${SRAID}
+SRAID=identifiants 
 
-ps: les [] ne sont pas à prendre en compte.
+==> Le process recup_data permet de récupérer toutes les sequences fastq compressé (format gz)
+==> Une image docker est utilisée pour utiliser la commande fastq-dump. Cet image est disponible dans notre dockerhub. Pour la tester, fair la commande suivante:
+git pull maisenh/fatsq-dump:v3.0.4
+
+ETAPE 3: Récupération 
+
+
+
 
 
