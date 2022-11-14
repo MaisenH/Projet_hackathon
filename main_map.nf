@@ -65,7 +65,7 @@ process Mapping {
 
     script:
     """
-    STAR --outSAMstrandField intronMotif --outFilterMismatchNmax 4 --outFilterMultimapNmax 10 --genomeDir ref/ --readFilesIn <(gunzip -c \$*_1.fastq) <(gunzip -c \$_2.fastq) --runThreadN 16 --outSAMunmapped None --outSAMtype BAM SortedByCoordinate --outStd BAM_SortedByCoordinate --genomeLoad NoSharedMemory > ${SRAID}.bam
+    STAR --outSAMstrandField intronMotif --outFilterMismatchNmax 4 --outFilterMultimapNmax 10 --genomeDir ref/ --readFilesIn <(gunzip -c \$*_1.fastq) <(gunzip -c \$*_2.fastq) --runThreadN 16 --outSAMunmapped None --outSAMtype BAM SortedByCoordinate --outStd BAM_SortedByCoordinate --genomeLoad NoSharedMemory > ${SRAID}.bam
     """
 }
 
