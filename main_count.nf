@@ -61,7 +61,7 @@ process Mapping {
     path ref
     
     output:
-    tuple val(SRAID), path("*.bam")
+    path '*.bam'
 
     script:
     """
@@ -85,7 +85,7 @@ process Featurecount {
     publishDir params.resultdir, mode: 'copy'
     
     input:
-    tuple val(SRAID), path(".bam")
+    file bam
     path 'annot.gff'
     
     output:
@@ -93,7 +93,7 @@ process Featurecount {
 
     script:
     """
-    featureCounts -T 16 -t gene -g gene_id -s 0 -a annot.gff -p -o output.counts \$*.bam
+    featureCounts -T 16 -t gene -g gene_id -s 0 -a annot.gff -p -o output.counts ${bam}
     """
 }
 
