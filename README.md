@@ -6,7 +6,7 @@ http://www.ncbi.nlm.nih.gov/sra?term=SRA062359
 
 On a selectionné les fichiers transcriptomes pour générer un fichier contenant leurs identifiants (identiants_transcriptome.txt)
 
-***ETAPE 2: Téléchargements des 6 fichiers fastq***
+***ETAPE 2: Téléchargements des 9 fichiers fastq***
 
 Le lien général pour télécharger ces séquences fastq est: 
 
@@ -50,7 +50,7 @@ L'ensemble des images que nous avons fait sont disponibles également dans notre
 * Le process Mapping permet d'aligner les reads (présents dans les fichiers fastq) sur le génome de référence à l'aide d'une annotation dejà faite que l'on récupère dans le process précédent.
 * L'outil utilisé est le meme que dans le process précédent: star
 
-***ETAPE 5: Indexation des fichiers bam avec samtools ***
+***ETAPE 5: Indexation des fichiers bam avec samtools***
 * Le process samtools permet d'indexer les fichiers bam => bai
 * Une image docker a été créée pour utiliser la commande samtools. 
 * Cette image est disponible dans un repository dans dockerhub. Pour la tester, fair la commande suivante:
@@ -58,7 +58,7 @@ L'ensemble des images que nous avons fait sont disponibles également dans notre
     git pull staphb/samtools:latest
     ```
 
-***ETAPE 6: Création de la table de comptage ***
+***ETAPE 6: Création de la table de comptage***
 * Le process FeatureCounts permet de créer une table de comptage. Pour chaque gène (ligne de la table), le nombre de reads dans chaque conditions (colonne de la table) sera représenté.
 * 
 * Une image docker a été créée pour utiliser la commande featureCounts. 
@@ -67,7 +67,7 @@ L'ensemble des images que nous avons fait sont disponibles également dans notre
     git pull maisenh/featurecounts:v2.0.0
     ```
     
-***ETAPE 7: Analyse statistique ***
+***ETAPE 7: Analyse statistique***
 * Le process AnalyseStat a permis de déterminer les gènes différenciellement exprimés entre les deux conditions(sain contre tumeur).
 * Une image docker a été créée pour utiliser la commande Deseq2. 
 * Cette image est disponible dans  un repository dans dockerhub.. Pour la tester, fair la commande suivante:
