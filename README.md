@@ -6,7 +6,7 @@ http://www.ncbi.nlm.nih.gov/sra?term=SRA062359
 
 On a selectionné les fichiers transcriptomes pour générer un fichier contenant leurs identifiants (identiants_transcriptome.txt)
 
-***ETAPE 2: Téléchargements des 9 fichiers fastq***
+***ETAPE 2: Téléchargements des 8 fichiers fastq***
 
 Le lien général pour télécharger ces séquences fastq est: 
 
@@ -68,9 +68,11 @@ L'ensemble des images que nous avons fait sont disponibles également dans notre
     ```
     
 ***ETAPE 7: Analyse statistique***
-* Le process AnalyseStat a permis de déterminer les gènes différenciellement exprimés entre les deux conditions(sain contre tumeur).
-* Une image docker a été créée pour utiliser la commande Deseq2. 
+* Le process AnalyseStat est séparé en deux. Il a permis de déterminer les gènes différenciellement exprimés entre les deux conditions(sain contre tumeur). La première partie va analyser les données et renvoyer des hitogrammes nous permettant d'évaluer la qualité de nos résultats. La deuxieme partie va permettre de récupérer les noms biologiques des gènes différenciellement exprimés.
+* Une image docker a été créée pour utiliser la commande Deseq2 et biomaRt. 
 * Cette image est disponible dans  un repository dans dockerhub.. Pour la tester, fair la commande suivante:
     ```
     git pull genomicpariscentre/deseq2:latest
+    
+    
     ```
