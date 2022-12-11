@@ -1,0 +1,136 @@
+##############################################
+## Chargement des packages
+##############################################
+#setwd("./") # Mettre le bon chemin
+library(DESeq2)
+##############################################
+## Lecture table de comptage
+##############################################
+
+Data = read.table("output.countsT1", header=T)
+head(Data)
+
+## On retire les colonnes qui ne nous interesse pas
+## On réorganise correctement les résultats de compatges selon les conditions
+
+countData = Data[,-(2:6)]
+countData=cbind(countData[,c("Geneid","SRR628585.bam",
+                             "SRR628586.bam","SRR628587.bam","SRR628588.bam",
+                             "SRR628582.bam","SRR628583.bam",
+                             "SRR628584.bam","SRR628589.bam")]) #on met les memes conditions ensembles 
+colnames(countData)
+#Condition 1: WT
+#Condition 2: mutant 
+conds <- factor(rep(1:2, c(4,4))) 
+conds
+table(conds)
+
+dim(countData)
+
+## On ne garde que les lignes qui ont des comptages non nuls
+
+countData <- countData[which(rowSums(countData[-1])> 0),]
+dim(countData)
+
+##############################################
+## ANALYSE DESeq2 : Creation de l'objet dds
+##############################################
+
+colData <- data.frame(conds)
+dds <- DESeqDataSetFromMatrix(countData = countData[,-1], 
+                              colData = colData,
+                              design = ~ conds)
+
+dds <- DESeq(dds, test="LRT", reduced = ~1)
+
+dds_res <- results(dds)
+
+## Histogramme pvalue
+dds_res_order <- dds_res[order(dds_res$pvalue),] 
+
+pdf("Histo1.pdf",width=8,height=6)
+    hist(dds_res_order$pvalue, 
+     xlab= "pvalue", ylab= "Fréquence", main= "Histogramme des pvalue")
+dev.off()
+
+#dev.print(device = png, file = "histogramme_pvalue.png", width = 600)
+
+## Histogramme pvalue ajustée
+
+dds_res_order <- dds_res[order(dds_res$padj),] 
+pdf("Histo2.pdf",width=8,height=6)
+    hist(dds_res_order$padj, 
+     xlab= "pvalue ajustée", ylab= "Fréquence", main= "Histogramme des pvalue ajustée")
+dev.off()
+
+
+#dev.print(device = png, file = "histogramme_pvalue_ajustée.png", width = 600)
+
+#########################################################
+## SELECTION DES GENES DIFFERENCIELLEMENT EXPRIME (DE)
+#########################################################
+
+set.seed(12345)
+alpha <- 0.01
+
+#On selectionne les genes qui ont une pvalue<0.01 = differencielement exprime (DE)
+
+Gene_DE <- countData[which(dds_res$padj < alpha),]
+as.list(Gene_DE[1]) #Liste de gene DE
+
+dim(Gene_DE) 
+dim(countData) # On en a 26 sur 29869
+
+
+# Avec alpha = 0.05 on a 153 genes DE
+dim(countData[which(dds_res$padj < 0.05),])
+
+#id des genes DE
+countData[which(dds_res$padj < 0.05),][,"Geneid"]
+
+
+
+#########################################################
+##ACP
+#########################################################
+
+library(FactoMineR)
+#library(ggplot2)
+
+## On met en index les genes 
+countData_tmp= countData
+row.names(countData_tmp) <- countData_tmp[,1]
+countData_tmp <- countData_tmp[,-1]
+
+pseudo_countData <- log2(countData_tmp + 0.5)
+ACP <- PCA(t(pseudo_countData), scale.unit = TRUE, graph = FALSE)
+
+## ACP des differentes conditions
+pdf("Histo3.pdf",width=8,height=6)
+    plot.PCA(ACP, title = "ACP")
+dev.off()
+
+#dev.print(device = png, file = "ACP.png", width = 600)
+
+# Variance expliqué en fonction de la composante
+pdf("Histo4.pdf",width=8,height=6)
+    barplot(ACP$eig[,2],main="% de variance expliquée en focntion de la composante")
+dev.off()
+#dev.print(device = png, file = "Pourcentage_variance_expliquée_ACP.png", width = 600)
+
+
+Gene_DE <- countData[which(dds_res$padj < alpha),]
+
+Gene_DE=data.frame(Gene_DE)
+colnames(countData)
+
+#On associe les genes avec les pvalue ajustée  
+Gene_DE = cbind(Gene_DE[,"Geneid"], cbind(rownames(dds_res_order)[which(dds_res_order$padj <= 0.01)],
+                                          dds_res_order$padj[which(dds_res_order$padj <= 0.01)]))
+
+Gene_DE=Gene_DE[,-2]
+
+colnames(Gene_DE)[1:2] <- c("gene_id","padj")
+head(Gene_DE)
+
+save(Gene_DE,file="Gene_DE.Rda") 
