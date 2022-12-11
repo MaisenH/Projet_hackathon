@@ -110,7 +110,7 @@ process AnalyseStat {
     file 'Gene_DE.Rda'
     script:
     """
-    Rscript /tmp/workflow/Marchestp.R
+    Rscript /tmp/workflow/ScriptR1.R
     """
 }
 
@@ -128,7 +128,7 @@ process AnalyseStat2 {
 
     script:
     """
-    Rscript /tmp/workflow/Test1.R
+    Rscript /tmp/workflow/ScriptR2.R
     """
 }
 
