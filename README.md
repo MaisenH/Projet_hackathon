@@ -60,7 +60,6 @@ L'ensemble des images que nous avons fait sont disponibles également dans notre
 
 ***ETAPE 6: Création de la table de comptage***
 * Le process FeatureCounts permet de créer une table de comptage. Pour chaque gène (ligne de la table), le nombre de reads dans chaque conditions (colonne de la table) sera représenté.
-* 
 * Une image docker a été créée pour utiliser la commande featureCounts. 
 * Cette image est disponible dans notre dockerhub. Pour la tester, fair la commande suivante:
     ```
