@@ -74,5 +74,8 @@ L'ensemble des images que nous avons fait sont disponibles également dans notre
     ```
     git pull genomicpariscentre/deseq2:latest
     
+    ```
     
+    ```
+    git pull  msgao/biomart
     ```
