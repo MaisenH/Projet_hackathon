@@ -1,0 +1,22 @@
+#################################################################
+## ASSOCIATION DES IDENTIFIANTS DE GENE AVEC LES NOMS DE GENE
+#################################################################
+library(biomaRt)
+load(file="Gene_DE.Rda")
+
+
+#on récupère le nom des gènes
+mart <- useDataset("hsapiens_gene_ensembl", useMart("ensembl"))
+biomart<-getBM(filters= "ensembl_gene_id", attributes= c("ensembl_gene_id","hgnc_symbol"),values = Gene_DE, mart= mart,useCache = F )
+colnames(biomart)=c("gene_id","hgnc_symbol")
+biomart$hgnc_symbol[duplicated(biomart$hgnc_symbol)]
+
+biomart$hgnc_symbol[duplicated(biomart$hgnc_symbol)]
+res_final=merge(biomart,Gene_DE,by="ensembl_gene_id",all.x=TRUE,all.y=FALSE)
+res_final <- as.data.frame(res_final)
+# On sauvegarde les résultats 
+save(res_final,file="dataframe_resultat.Rda")
+
+# On récupère uniquement les gènes associé à leur nom biologique
+list_gene_DE=as.list(res_final[which(res_final[2]!=""),])[2]
+save(list_gene_DE,file="list_Gene_DE.Rda")
